@@ -1,0 +1,11 @@
+perceptron_src/Perceptron.py
+perceptron_src/ImageCreator.py
+Lib/
+Include/
+.vscode/
+Scripts
+tcl
+bin
+*.pkl
+test.py
+*.pyc
