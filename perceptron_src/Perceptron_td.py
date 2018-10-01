@@ -23,7 +23,19 @@ class Perceptron(object):
              # TODO Exercise 1 Initalize a new network containing 
              # numberOfNeurons neurons each with a different position chosen
              # at random
-            self.network = []
+           positionList = self.generatePositionList(imageHeight,imageHeight)
+
+           self.network = []
+           for i in range(numberOfNeurons):
+                x = np.random.random_integers(0, len(positionList)-1)
+                self.network.append(
+                Neuron([positionList[x][0],
+                        positionList[x][1]], True))
+                del positionList[x]
+
+
+
+
         else:
             # TODO Exercise ? Load an existing network
             self.load(weights)
@@ -48,7 +60,7 @@ class Perceptron(object):
         positionList = []
         for x in range(imageWidth):
             for y in range(imageHeight):
-                positionList.append((x,y))
+                positionList.append((x ,y))
         
         return positionList
 
@@ -59,24 +71,65 @@ class Perceptron(object):
             and activates the neuron if the pixel value is 1.
             It then returns -1 if the weighted sum is negative, 0 if the 
             weighted sum is 0 and +1 if the weighted sum is positive.
-        
+
         Arguments:
             image {numpy.array} -- The binary image input
         """
 
-        return 0
+        sum = 0
+
+
+
+        network = self.network
+        for i in range(len(network)):
+            pixel = image[network[i].yPos][network[i].xPos]
+            if pixel == 1:
+                network[i].active = True
+            sum   +=  pixel*network[i].value;
+
+
+        if sum < 0 :
+            return -1
+
+        if sum == 0:
+            return 0
+
+        if sum > 0:
+            return 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     # TODO Exercise 3: Implement the backpropagation function
     def backProp(self, expectedResult, result):
         """If the expected result does not match the actual result, add the 
            expected result to the value of all active neurons, then deactivate
            them.
-        
+
         Arguments:
             expectedResult {int} -- The expected result for the forward pass
             result {int} -- The actual result for the forward pass
         """
-        
+
+        if expectedResult != result :
+            for i in range(len(self.network)):
+                if  self.network[i].active == True:
+                    self.network[i].value += expectedResult
+                    self.network[i].active = False
+
+
+
         pass
 
     # TODO Exercise 4: Implement the error calculation function
@@ -134,7 +187,7 @@ class Perceptron(object):
 
     def load(self, file):
         """Load the neural network from a pickle file 
-        
+
         Arguments:
             file {str} -- The path to the file containing the weights
         """

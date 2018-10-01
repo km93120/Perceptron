@@ -431,9 +431,9 @@ def fullTest():
 
 if __name__ == "__main__":
     colorama.init()
-    exercise1()
-    # exercise2()
-    # exercise3()
+    #exercise1()
+    exercise2()
+    #exercise3()
     # exercise4()
     # exercise5()
     # exercise6()
