@@ -121,12 +121,16 @@ class Perceptron(object):
             expectedResult {int} -- The expected result for the forward pass
             result {int} -- The actual result for the forward pass
         """
-
-        if expectedResult != result :
-            for i in range(len(self.network)):
-                if  self.network[i].active == True:
+        for i in range(len(self.network)):
+            if expectedResult != result :
+                if self.network[i].active:
                     self.network[i].value += expectedResult
                     self.network[i].active = False
+            else:
+                self.network[i].active = False
+
+
+
 
 
 
@@ -136,13 +140,22 @@ class Perceptron(object):
     def calcError(self, labels, results):
         """Compute the number of label/result pairs that are not equal and 
            return the result.
-        
+
         Arguments:
             labels {list(int)} -- The list of labels
             results {list(int)} -- The list of results
         """
+        error = 0
 
-        return 0
+
+        goodResults = 0
+
+        for i in range(len(labels)):
+            if(labels[i] == results[i]):
+                goodResults += 1
+        error = len(labels) - goodResults
+
+        return error
 
 
     # TODO Exercise 5: Implement the training function
@@ -150,13 +163,23 @@ class Perceptron(object):
         """Train the perceptron by computing the result of a forward pass then 
             by backpropagating that result through the neural network until the
             error reaches 0 or the max iteration number has been reached.
-        
+
         Arguments:
             images {[type]} -- [description]
             labels {[type]} -- [description]
             numIterations {[type]} -- [description]
         """
-        
+        results = []
+        for i in range(len(images)):
+           results.append(self.backProp(self.forwardPass(images[i]),labels[i]))
+
+        for j in range(0, maxIterations):
+            if self.calcError(labels,results) == 0 :
+                break
+
+
+
+
         pass
 
     # TODO Exercise 6: Implement the testing function
