@@ -23,7 +23,7 @@ class Perceptron(object):
              # TODO Exercise 1 Initalize a new network containing 
              # numberOfNeurons neurons each with a different position chosen
              # at random
-           positionList = self.generatePositionList(imageHeight,imageHeight)
+           positionList = self.generatePositionList(imageWidth,imageHeight)
 
            self.network = []
            for i in range(numberOfNeurons):
@@ -150,8 +150,8 @@ class Perceptron(object):
 
         goodResults = 0
 
-        for i in range(len(labels)):
-            if(labels[i] == results[i]):
+        for i in range(len(results)):
+            if labels[i] == results[i]:
                 goodResults += 1
         error = len(labels) - goodResults
 
@@ -171,16 +171,26 @@ class Perceptron(object):
         """
         results = []
         for i in range(len(images)):
-           results.append(self.backProp(self.forwardPass(images[i]),labels[i]))
-
-        for j in range(0, maxIterations):
-            if self.calcError(labels,results) == 0 :
-                break
-
-
+           results.append(self.forwardPass(images[i]))
+           for j in range(0,maxIterations):
+               self.backProp(labels[i],results[i])
+               if self.calcError(labels,results) == 0:
+                   break
 
 
-        pass
+
+
+
+
+
+
+
+
+
+
+
+
+            #pass
 
     # TODO Exercise 6: Implement the testing function
     def test(self, images):
